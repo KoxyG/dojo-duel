@@ -6,8 +6,9 @@ interface StartMenuProps {
 
 const StartMenu: FC<StartMenuProps> = ({ onStartClick }) => {
   return (
-    <div className="min-h-screen flex justify-center items-center ">
-      <button className="p-4 border" onClick={onStartClick}>Start Game</button>
+    <div className="min-h-screen text-white flex justify-center
+     items-center ">
+      <button className="p-4 border text-white" onClick={onStartClick}>Start Game</button>
     </div>
   );
 };

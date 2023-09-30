@@ -1,37 +1,99 @@
-import * as THREE from 'three';
-import WebGL from 'three/addons/capabilities/WebGL.js';
+import React, { useRef, useEffect } from "react";
+import { resources } from "./Resources";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
-
-camera.position.z = 5;
-
-function animate() {
-	requestAnimationFrame( animate );
-
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-
-	renderer.render( scene, camera );
+interface CanvasProps {
+  width: number;
+  height: number;
+  skyscraperHeights: number[];
+  skyscraperColor: string[];
+  windowCount: number;
 }
 
-if ( WebGL.isWebGLAvailable() ) {
+const Canvas = ({
+  width,
+  height,
+  skyscraperHeights,
+  skyscraperColor,
+}: CanvasProps) => {
 
-	// Initiate function or other initializations here
-	animate();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const drawSkyscrapers = (ctx: CanvasRenderingContext2D) => {
+    const skyscraperWidth = 160; 
+    const spacing = 10; 
+    const startX =
+      (width - (skyscraperWidth + spacing) * skyscraperHeights.length) / 2;
 
-} else {
+    // Set clipping region outside the loop
+    ctx.beginPath();
+    ctx.rect(0, 0, width, height);
+    ctx.clip();
 
-	const warning = WebGL.getWebGLErrorMessage();
-	document.body.appendChild( warning );
+    skyscraperHeights.forEach((skyscraperHeight, index) => {
+      const x = startX + index * (skyscraperWidth + spacing);
 
-}
+      const skyscraperImage = resources.images.skyscraper.image;
+
+      // Draw each skyscraper with a specific height
+      ctx.fillStyle = skyscraperColor[index];
+      ctx.fillRect(
+        x,
+        height - skyscraperHeight,
+        skyscraperWidth,
+        skyscraperHeight
+      );
+      
+      // Checking if the image is loaded
+      if (resources.images.skyscraper.isLoaded) {
+        // Draw the skyscraper image
+        ctx.drawImage(
+          skyscraperImage,
+          x,
+          height - skyscraperHeight,
+          skyscraperWidth,
+          skyscraperHeight
+        );
+        // Reset the clipping region after drawing
+        ctx.restore();
+      }
+      
+     
+    });
+  };
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+
+      if (ctx) {
+        drawSkyscrapers(ctx);
+      }
+    }
+  }, []);
+
+  return (
+    <div>
+      <canvas ref={canvasRef} height={height} width={width}></canvas>
+    </div>
+  );
+};
+
+Canvas.defaultProps = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+  skyscraperHeights: [350, 200, 250, 180, 350, 220, 150, 350],
+  skyscraperColor: [
+    "#04a9ac",
+    "#ac0303",
+    "#04a9ac",
+    "#ac0303",
+    "#04a9ac",
+    "#ac0303",
+    "#04a9ac",
+    "#ac0303",
+  ],
+};
+
+export default Canvas;

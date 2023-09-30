@@ -1,0 +1,23 @@
+.max {
+  height: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 1;
+  background-color: #a4343d;
+}
+.main {
+  display: flex;
+  border-radius: 5px;
+  gap: 5px;
+  padding: 5px;
+  align-items: center;
+  background-color: #f07638;
+}
+
+.value {
+  height: 100%;
+  width: 0%;
+  background-color: #c4d36b;
+  transition: 0.35s;
+}
