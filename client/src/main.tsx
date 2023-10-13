@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import './index.css';
-import { setup } from './dojo/setup';
 import { DojoProvider } from './DojoContext';
 
 async function init() {
@@ -10,12 +9,12 @@ async function init() {
   if (!rootElement) throw new Error('React root not found');
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
-  const setupResult = await setup();
+
   root.render(
     <React.StrictMode>
-      {/* <DojoProvider value={setupResult}> */}
+      <DojoProvider > 
         <App />
-      {/* </DojoProvider> */}
+      </DojoProvider>
     </React.StrictMode>
   );
 }

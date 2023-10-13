@@ -1,27 +1,20 @@
-import React, { useRef, useEffect } from "react";
+import React, { Component, createRef } from "react";
 import { resources } from "./Resources";
-
-
 
 interface CanvasProps {
   width: number;
   height: number;
   skyscraperHeights: number[];
   skyscraperColor: string[];
-  windowCount: number;
 }
 
-const Canvas = ({
-  width,
-  height,
-  skyscraperHeights,
-  skyscraperColor,
-}: CanvasProps) => {
+class Canvas extends Component<CanvasProps> {
+  private canvasRef = createRef<HTMLCanvasElement>();
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const drawSkyscrapers = (ctx: CanvasRenderingContext2D) => {
-    const skyscraperWidth = 160; 
-    const spacing = 10; 
+  drawSkyscrapers(ctx: CanvasRenderingContext2D) {
+    const { width, height, skyscraperHeights, skyscraperColor } = this.props;
+    const skyscraperWidth = 160;
+    const spacing = 10;
     const startX =
       (width - (skyscraperWidth + spacing) * skyscraperHeights.length) / 2;
 
@@ -43,7 +36,7 @@ const Canvas = ({
         skyscraperWidth,
         skyscraperHeight
       );
-      
+
       // Checking if the image is loaded
       if (resources.images.skyscraper.isLoaded) {
         // Draw the skyscraper image
@@ -57,28 +50,30 @@ const Canvas = ({
         // Reset the clipping region after drawing
         ctx.restore();
       }
-      
-     
     });
-  };
+  }
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
+  componentDidMount() {
+    if (this.canvasRef.current) {
+      const canvas = this.canvasRef.current;
       const ctx = canvas.getContext("2d");
 
       if (ctx) {
-        drawSkyscrapers(ctx);
+        this.drawSkyscrapers(ctx);
       }
     }
-  }, []);
+  }
 
-  return (
-    <div>
-      <canvas ref={canvasRef} height={height} width={width}></canvas>
-    </div>
-  );
-};
+  render() {
+    const { width, height } = this.props;
+
+    return (
+      <div>
+        <canvas ref={this.canvasRef} height={height} width={width}></canvas>
+      </div>
+    );
+  }
+}
 
 Canvas.defaultProps = {
   width: window.innerWidth,

@@ -1,17 +1,24 @@
-import StartMenu from './UI/Component/StartMenu';
-// import { Battle } from './UI/Component/Battle';
-import { useEffect, useState } from 'react';
-import Canvas from './UI/Component/Canvas';
+import {  useEffect, useState } from 'react';
+import Waiting4Opponet from './UI/Elements/Waiting4Opp';
+import StartMenu from './UI/Elements/StartMenu';
+import { UseDojoContext } from './DojoContext';
+import Canvas from './UI/Elements/Canvas';
 
 
 
 export const App = () => {
-  const [mode, setMode] = useState('start');
+ 
+  const {mode, setMode} = UseDojoContext();
+
 
   useEffect(() => {
-    if (mode === 'battle') {
+    if (mode === 'start') {
       console.log(mode)
       // setWinner(undefined);
+    } else if (mode === 'waiting') {
+      console.log(mode)
+    } else if (mode === 'battle') {
+      console.log(mode);
     }
   }, [mode]);
 
@@ -19,11 +26,14 @@ export const App = () => {
 
   return (
     <div className="">
-      {mode === 'start' && (
-        <StartMenu onStartClick={() => setMode('battle')} />
-        // <StartMenu onStartClick={() => setMode('battle')} />
-      )}
-      {mode === 'battle' && ( <Canvas  /> )}
-    </div>
+  {mode === 'start' ? (
+    <StartMenu />
+  ) : mode === 'waiting' ? (
+    <Waiting4Opponet onWaitClick={() => setMode('waiting')} />
+  ) : (
+    <Canvas />
+  )}
+</div>
+
   );
 };

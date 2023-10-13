@@ -31,6 +31,35 @@ canvas {
   padding: 2em;
 }
 
+.Button {
+  position: relative;
+}
+.Button {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  background: linear-gradient(to right, transparent 50%, white 50%);
+  background-size: 200% 100%;
+  transition: background-position 0.55s;
+  background-position: 0 -100%;
+
+}
+
+.Button:hover {
+  color: black;
+  background-position: -100% 0;
+  background: linear-gradient(to right, transparent 50%, );
+  cursor: pointer;
+}
+
+
+
+
+
 :root {
   font-family: 'Press Start 2P', cursive;
   line-height: 1.5;
@@ -65,13 +94,9 @@ body {
   height: 100vh; /* 100% of the viewport height */
   display: flex;
   justify-content: center; /* Center horizontally */
-  align-items: center; 
+
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
 
 
 
